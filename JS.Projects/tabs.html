@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="parent">
+      <div class="menu">
+        <a href="" class="active">вкладка 1</a>
+        <a href="">вкладка 2</a>
+        <a href="">вкладка 3</a>
+      </div>
+      <div class="tabs">
+        <div class="tab active">текст вкладки 1</div>
+        <div class="tab">текст вкладки 2</div>
+        <div class="tab">текст вкладки 3</div>
+      </div>
+    </div>
+
+    <style>
+      #parent {
+        margin: 0 auto;
+        width: 400px;
+      }
+
+      .menu a {
+        margin-right: 5px;
+        display: inline-block;
+        padding: 10px;
+        color: black;
+        text-decoration: none;
+        border: 1px solid gray;
+        border-bottom: none;
+      }
+
+      .menu a:hover {
+        background: #bdbbbb;
+      }
+
+      .menu a.active {
+        border-color: transparent;
+        background: #bdbbbb;
+      }
+
+      .tabs .tab:not(.active) {
+        display: none;
+      }
+
+      .tabs .tab {
+        padding: 10px;
+        background: #bdbbbb;
+        height: 300px;
+      }
+    </style>
+
+    <script>
+      let links = document.querySelectorAll("a");
+      let tabs = document.querySelectorAll(".tabs div");
+      let menu = document.querySelector(".tabs");
+      i = 0;
+
+      links.forEach((link) => {
+        i++;
+        link.dataset.num = i;
+        link.addEventListener("click", func);
+      });
+
+      function func(e) {
+        e.preventDefault();
+
+        links.forEach((link) => {
+          link.classList.remove("active");
+        });
+
+        this.classList.add("active");
+
+        tabs.forEach((tab) => {
+          tab.classList.remove("active");
+        });
+
+        if (this.dataset.num == 1) {
+          menu.firstElementChild.classList.add("active");
+        } else if (this.dataset.num == 2) {
+          menu.firstElementChild.nextElementSibling.classList.add("active");
+        } else if (this.dataset.num == 3) {
+          menu.lastElementChild.classList.add("active");
+        }
+      }
+    </script>
+  </body>
+</html>

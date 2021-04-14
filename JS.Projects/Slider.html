@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="slider"></div>
+
+    <script>
+      let texts = ["text1", "text2", "text3"];
+      let slider = document.getElementById("slider");
+
+    (function sliderTimer() {
+      i = 0;
+      texts.forEach((text, i) => {
+       setInterval(() => {
+          slider.textContent = text; 
+          
+          // if(i > texts.length) {
+          //   texts = texts[0];
+          // }
+        }, (i + 1) * 1000);
+            
+      });
+   clearInterval()
+    })()
+
+ 
+
+    </script>
+  </body>
+</html>

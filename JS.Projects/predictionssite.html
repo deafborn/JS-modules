@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        transition: ease-in-out 2s;
+      }
+
+      .div {
+        display: flex;
+        flex-direction: column;
+        margin: 250px auto;
+      }
+
+      .text {
+        margin: 0 auto;
+        text-align: center;
+        margin-bottom: 50px;
+        font-size: 50px;
+        width: 100%;
+      }
+
+      .red {
+        color: red;
+      }
+
+      .green {
+        color: green;
+      }
+
+      .button {
+        font-weight: 400;
+        font-size: 18px;
+        margin: 0 auto;
+        padding: 20px;
+        border-radius: 30px;
+        border: none;
+        outline: none;
+        min-width: 200px;
+        box-shadow: 0 15px 15px rgba(0, 0, 0, 0.5);
+        background-color: rgb(88, 51, 190);
+        color: #fff;
+        letter-spacing: 1px;
+        font-family: sans-serif;
+      }
+
+      .prtext {
+        margin: 0 auto;
+        text-align: center;
+        margin-bottom: 50px;
+        color: rgb(254, 255, 240);
+        font-size: 50px;
+        width: 100%;
+      }
+
+      .button:active {
+        background-color: rgb(116, 112, 112);
+      }
+    </style>
+
+    <div class="div">
+      <p class="text">Сейчас случится самая мистическая мистика</p>
+      <button class="button">Получить предсказание</button>
+      <p class="prtext"></p>
+    </div>
+
+    <script>
+      let predictions = {
+        1: "Все будет хорошо",
+        2: "Все будет скорее чем хорошо",
+        3: "Все будет скорее чем нехорошо",
+        4: "Вcе будет нехорошо",
+        5: "Все будет лучше некуда, но очень плохо",
+      };
+
+      let button = document.querySelector(".button");
+      let text = document.querySelector(".text");
+      let prtext = document.querySelector(".prtext");
+
+      button.addEventListener("click", generate);
+
+      function timer() {
+        text.textContent = Math.floor(Math.random() * 5 + 1);
+
+        button.removeEventListener("click", generate);
+        button.addEventListener("click", stop);
+        button.textContent = "Остановить колесо фортуны";
+
+        generate();
+      }
+
+      function generate() {
+        timeoutID = setTimeout(timer, 100);
+      }
+
+      function stop() {
+        clearTimeout(timeoutID);
+
+        button.style.display = "none";
+
+        for (let prediction in predictions) {
+          if (prediction == text.textContent) {
+            prtext.textContent = predictions[prediction];
+            text.style.color = "#fff";
+
+            if (prediction < 3) {
+              document.body.style.background = "green";
+            } else {
+              document.body.style.background = "red";
+            }
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

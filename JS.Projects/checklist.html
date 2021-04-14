@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input id="input" /><br />
+    <ul id="list"></ul>
+
+    <style>
+      body {
+        text-align: center;
+      }
+
+      #input,
+      #list {
+        display: inline-block;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      .cross {
+        text-decoration: line-through;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      #list {
+        padding: 0;
+        list-style-type: none;
+      }
+    </style>
+
+    <script> 
+
+        //Сделал не так, как у тебя, формировал верстку через шаблонные литералы. Посмотри, пжл. 
+
+      let input = document.querySelector("#input");
+      let list = document.querySelector("#list");
+
+      input.addEventListener("keypress", function (event) {
+        if (event.key == "Enter") {
+          let li = document.createElement("li");
+          li.innerHTML = `<a href='#' class='done'>Сделано</a> <a href='#' class='remove'>Удалить</a> 
+          <span class='text'>${this.value}</span><input class='editinput hidden'>`;
+          list.appendChild(li);
+          this.value = "";
+        }
+        markDone();
+        remove();
+        edit();
+      });
+
+      function markDone() {
+        let done = document.querySelectorAll(".done");
+        done.forEach((elem) => {
+          elem.addEventListener("click", function () {
+            this.classList.toggle("cross");
+          });
+        });
+      }
+
+      function remove() {
+        let remove = document.querySelectorAll(".remove");
+        remove.forEach((elem) => {
+          elem.addEventListener("click", function () {
+            this.parentElement.remove();
+          });
+        });
+      }
+
+      function edit() {
+        let texts = document.querySelectorAll(".text");
+        texts.forEach((text) => {
+          text.addEventListener("dblclick", function () {
+            let input = document.createElement("input");
+            this.nextElementSibling.classList = "";
+            this.nextElementSibling.value = this.textContent;
+            this.classList.add("hidden");
+          });
+        });
+
+        let editInputs = document.querySelectorAll(".editinput");
+
+        editInputs.forEach((input) => {
+          input.addEventListener("keydown", function (e) {
+            if (e.code == "Enter") {
+              this.previousElementSibling.textContent = this.value;
+              this.previousElementSibling.classList = "";
+              this.classList.add("hidden");
+            }
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,151 @@
+
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="month">
+        <span class="back">&larr;</span><span class="year-month"></span
+        ><span class="forward">&rarr;</span>
+      </div>
+      <ul class="list"></ul>
+    </div>
+
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: rgb(145, 145, 145);
+        font-family: "Roboto", sans-serif;
+        font-weight: bold;
+      }
+
+      .month {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 24px;
+      }
+
+      .list {
+        display: flex;
+        justify-content: space-between;
+        list-style-type: none;
+        background-color: #fff;
+        border-radius: 20px;
+      }
+
+      .list li {
+        margin: 20px 5px;
+      }
+
+      .container {
+        width: 1200px;
+        margin: 0 auto;
+        margin-top: 15%;
+      }
+
+      .red {
+        background-color: red;
+        border-radius: 10px;
+        padding: 5px;
+      }
+
+      .back {
+        margin-right: 50px;
+        cursor: pointer;
+      }
+
+      .forward {
+        margin-left: 50px;
+        cursor: pointer;
+      }
+    </style>
+
+    <script>
+      let days = new Date();
+      let lastDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+      let month = days.getMonth();
+      let daysInMonth = lastDays[month];
+      let now = new Date(days.getFullYear(), days.getMonth(), days.getDate());
+      let ul = document.querySelector("ul");
+
+      function monthHeader(date) {
+        let header = document.querySelector(".year-month");
+        let monthsArr = [
+          "Январь",
+          "Февраль",
+          "Март",
+          "Апрель",
+          "Май",
+          "Июнь",
+          "Июль",
+          "Август",
+          "Сентябрь",
+          "Октябрь",
+          "Ноябрь",
+          "Декабрь",
+        ];
+        let monthsNum = date.getMonth();
+
+         
+        header.innerHTML = `${monthsArr[monthsNum]} ${date.getFullYear()} года`;
+
+        let left = document.querySelector(".back");
+        let right = document.querySelector(".forward");
+
+        left.addEventListener("click", function () {
+          header.innerHTML = `${
+            monthsArr[--monthsNum]
+          } ${date.getFullYear()} года`;
+          daysInMonth = lastDays[--month];
+          ul.innerHTML = ''
+          getList(days);
+        });
+
+        right.addEventListener("click", function () {
+          if (days.getFullYear()) {
+          header.innerHTML = `${
+            monthsArr[++monthsNum]
+          } ${date.getFullYear()} года`;
+          daysInMonth = lastDays[++month];
+          ul.innerHTML = ''
+          getList(days);
+        }
+        });
+      } 
+
+      monthHeader(days);
+
+      function getList(date) {
+        let date1 = new Date(days.getFullYear(), days.getMonth(), 1);
+        let nowInList = Math.round((now - date1) / 1000 / 3600 / 24);
+        let ul = document.querySelector("ul");
+
+        for (let i = 1; i <= `${daysInMonth}`; i++) {
+          let li = document.createElement("li");
+          li.textContent = i;
+
+          li.textContent == nowInList + 1 && month == days.getMonth() ? li.classList.add("red") : li;
+
+          ul.appendChild(li);
+        }
+        return 
+      }
+      getList(days);
+    </script>
+  </body>
+</html>

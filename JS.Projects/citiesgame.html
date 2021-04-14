@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input id="input" />
+    <div id="message"></div>
+
+    <script>
+      let input = document.querySelector("#input");
+      let message = document.querySelector("#message");
+      let cities = [];
+      let robotCities = ["анадырь", "рига", "сочи", "анапа", "киров"];
+      // {а: [], }
+      let playerCheck = false;
+      let player = 0;
+
+      input.addEventListener("keydown", function (e) {
+        if (e.code == "Enter" && input.value != "") {
+          playerCheck = !playerCheck;
+
+          if (playerCheck) {
+            player = "Человек";
+          } else {
+            player = "Робот";
+          }
+
+          if (cities == false) {
+            cities.push(input.value.toLowerCase());
+            let str = input.value;
+            let firstUpper = str[0].toUpperCase() + str.slice(1);
+            message.textContent = `${firstUpper}. Ход переходит к ${
+              player + "у"
+            }`;
+            robotTurn();
+          } else {
+            validate();
+          }
+
+          input.value = "";
+        }
+      });
+
+      function validate() {
+        let lastcity = cities[cities.length - 1];
+        let lastletter = lastcity.length - 1;
+        console.log(lastletter);
+
+        if (
+          lastcity[lastletter] == "ь" ||
+          lastcity[lastletter] == "й" ||
+          lastcity[lastletter] == "ы"
+        ) {
+          lastcity = lastcity.substring(0, lastcity.length - 1);
+        }
+
+        if (input.value.toLowerCase()[0] !== lastcity[lastcity.length - 1]) {
+          message.textContent = `Первая буква названия не совпадает с последней буквой города ${lastcity}, который назвал ${player}`;
+          playerCheck = !playerCheck;
+        } else {
+          fillCitiesArr();
+        }
+      }
+
+      function fillCitiesArr() {
+        if (cities.includes(input.value)) {
+          message.textContent = "Такой город уже называли";
+          playerCheck = !playerCheck;
+        } else {
+          cities.push(input.value.toLowerCase());
+          console.log(cities);
+
+          robotTurn();
+        }
+      }
+
+      function robotTurn() {
+        let lastcity = cities[cities.length - 1];
+        let lastletter = lastcity.length - 1;
+
+        robotCities.forEach((city) => {
+          if (city[0] == lastcity[lastletter]) {
+            if (cities.includes(city)) {
+              let index = robotCities.indexOf(city);
+              robotCities.splice(index, 1);
+            } else {
+              return (message.textContent = `${city}`);
+            }
+          }
+          //message.textContent = `Я проиграл`;
+          console.log(`Я проиграл`);
+        });
+
+        
+      }
+    </script>
+  </body>
+</html>

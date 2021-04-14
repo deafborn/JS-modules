@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="parent">
+      <input id="elem" />
+      <ul id="list"></ul>
+    </div>
+    text text text text text
+
+    <style>
+      #parent {
+        position: relative;
+      }
+      #elem {
+        padding: 5px;
+        font-size: 18px;
+      }
+
+      #parent ul {
+        position: absolute;
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+        background-color: white;
+      }
+      #parent li {
+        border: 1px solid gray;
+        font-size: 18px;
+        padding: 5px;
+      }
+      #parent li:hover {
+        border: 1px solid black;
+        cursor: pointer;
+      }
+    </style>
+
+    <script>
+      let arr = ["Belarus", "Belgium", "Bulgaria"];
+      let ul = document.querySelector("#list");
+      let input = document.querySelector("#elem");
+
+      input.addEventListener("input", () => {
+        ul.innerHTML = "";
+
+        let filtered = arr.filter((elem) => elem.startsWith(input.value));
+
+        if (input.value != "") {
+          for (let filter of filtered) {
+            let li = document.createElement("li");
+            li.textContent = filter;
+            ul.appendChild(li);
+
+            li.addEventListener("click", () => {
+              input.value = li.textContent;
+              ul.innerHTML = "";
+            });
+          }
+        }
+      });
+
+      document.addEventListener("click", (e) => {
+        if (e.target !== "li") {
+          ul.innerHTML = '';
+        }
+      });
+
+      
+    </script>
+  </body>
+</html>

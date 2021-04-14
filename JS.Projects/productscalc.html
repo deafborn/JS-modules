@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="parent">
+      <div id="form">
+        <input id="name" placeholder="название" />
+        <input id="price" placeholder="цена" />
+        <input id="amount" placeholder="количество" />
+        <button id="add">Добавить</button>
+      </div>
+
+      <h2>Таблица продуктов:</h2>
+      <table id="table">
+        <tr>
+          <th>название</th>
+          <th>цена</th>
+          <th>кол-во</th>
+          <th>сумма</th>
+          <th>удалить</th>
+        </tr>
+      </table>
+      <div id="result">общий итог: <span id="total">0</span></div>
+    </div>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      #parent {
+        margin: 0 auto;
+        width: 500px;
+      }
+
+      #form {
+        display: flex;
+        margin-bottom: 15px;
+      }
+      #form input,
+      button {
+        padding: 8px;
+        width: 24%;
+        margin: 0 0.5% 10px 0.5%;
+      }
+
+      h2 {
+        margin-top: 0;
+        margin-bottom: 7px;
+      }
+
+      #table {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+      #table td,
+      #table th {
+        padding: 8px;
+        text-align: center;
+        border: 1px solid black;
+      }
+      #table td.remove {
+        color: blue;
+        cursor: pointer;
+        text-decoration: underline;
+      }
+      #table td.remove:hover {
+        text-decoration: none;
+      }
+
+      #result {
+        text-align: right;
+        margin-right: 10px;
+      }
+
+      .hidden {
+        display: none;
+      }
+    </style>
+
+    <script>
+      let name = document.querySelector("#name");
+      let price = document.querySelector("#price");
+      let amount = document.querySelector("#amount");
+      let add = document.querySelector("#add");
+      let table = document.querySelector("#table");
+      let total = document.querySelector("#total");
+
+      function createCell(tr, value, name) {
+        let td = document.createElement("td");
+
+        td.textContent = value;
+        td.classList.add(name);
+        tr.appendChild(td);
+
+        return td;
+      }
+
+      function recountTotal() {
+        let costs = table.querySelectorAll(".cost");
+        let sum = 0;
+
+        if (costs.length > 0) {
+          costs.forEach((cost) => (sum += Number(cost.textContent)));
+        }
+        total.textContent = sum;
+      }
+
+      function allowEdit(td) {
+        td.addEventListener("dblclick", function () {
+          this.innerHTML = `<input type='text' class='editinput'>`;
+
+          let editinput = document.querySelector(".editinput");
+
+          editinput.addEventListener("keydown", function (e) {
+            e.stopPropagation();
+      
+            if (e.code == "Enter") {
+              if (
+                td.classList.contains("price") ||
+                td.classList.contains("amount")
+              ) {
+                let rowTd = this.parentElement;  // вот эта часть вызывает у меня сомнения. Уж очень она громоздкая. Может, есть способ сделать ее короче?
+                let rowTr = rowTd.parentElement;
+                let rowPrice = rowTr.querySelector('.price')
+                let rowAmount = rowTr.querySelector('.amount')
+                let rowCost = rowTr.querySelector('.cost')
+                  if (rowTd == rowPrice) {
+                    rowCost.textContent = this.value * rowAmount.textContent
+                  } else if (rowTd == rowAmount) {
+                    rowCost.textContent = this.value * rowPrice.textContent
+                  }
+                  recountTotal();
+              }
+
+              this.parentElement.innerHTML = this.value;
+            }
+          });
+        });
+      }
+
+      add.addEventListener("click", function () {
+        let tr = document.createElement("tr");
+
+        allowEdit(createCell(tr, name.value, "name"));
+        allowEdit(createCell(tr, price.value, "price"));
+        allowEdit(createCell(tr, amount.value, "amount"));
+        createCell(tr, price.value * amount.value, "cost");
+        createCell(tr, "удалить", "remove").addEventListener(
+          "click",
+          function () {
+            this.parentElement.remove();
+            recountTotal();
+          }
+        );
+
+        table.appendChild(tr);
+
+        let forms = document.querySelectorAll("#form input");
+        forms.forEach((form) => (form.value = ""));
+
+        recountTotal();
+      });
+    </script>
+  </body>
+</html>
